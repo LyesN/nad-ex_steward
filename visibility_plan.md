@@ -59,3 +59,58 @@
 
 ---
 *Ce fichier est destiné à être versionné (git) afin de garder un historique des décisions et des avancées.*  
+## 🕷️ Cartographie de l'écosystème web et surveillance agentic
+
+En tant que startup AI-native, nous devons déployer des agents pour surveiller en permanence les espaces web où notre public cible pourrait s'exprimer sur la dictée, l'orthographe et les outils éducatifs.
+
+### 📋 Tâches à réaliser
+
+- [ ] **Identifier les sources pertinentes** :
+  - Groupes Facebook publics (ex. : « Parents d'élèves CP/CE1 », « Enseignants du primaire »)
+  - Communautés Reddit (ex. : r/france, r/education, r/Apprentissage)
+  - Forums éducatifs (ex. : Les-Cahiers-educatifs.fr, Forum des profs)
+  - Chaînes YouTube éducatives francophones (ex. : « La classe de Mallory », « Maxetom »)
+  - Blogs de professeurs et de parents (via recherche Google et flux RSS)
+  - Comptes Twitter/X éducatifs (@EducationFrance, @eduscol, etc.)
+
+- [ ] **Mettre en place un agent de scan quotidien** :
+  - Utiliser des outils comme `curl`, `grep` ou des scripts Python pour analyser les nouvelles publications
+  - Cibler les mots-clés : « dictée gratuite », « exercices orthographe CE1 », « application orthographe enfant », « problème d’orthographe »
+  - Scanner les flux RSS des blogs identifiés
+  - Surveiller les nouveaux posts dans les groupes Facebook/Reddit via leurs APIs publiques (si disponibles) ou via scraping léger (respectueux des CGU)
+
+- [ ] **Définir des critères de priorisation** :
+  - **Récence** : publications des dernières 24h (score élevé)
+  - **Importance de la communauté** : nombre de membres/abonnés, taux d’engagement
+  - **Visibilité de la publication** : nombre de vues, likes, commentaires, partages
+  - **Pertinence sémantique** : présence de mots-clés liés à la dictée/orthographe et à un besoin non satisfait
+  - **Score final** = pondération des critères ci-dessus (à affiner)
+
+- [ ] **Mettre en place un système d’alerte en temps réel** :
+  - Lorsqu’une publication dépasse un seuil de priorité (ex. : score > 8/10),
+  - Déclencher une alerte via Telegram bot vers un canal dédié
+  - Le message d’alerte doit inclure :
+    * Lien direct vers la publication
+    * Résumé en une phrase du besoin exprimé
+    * Proposition de réponse type (ex. : « Bonjour, connaissez-vous NAD-ex ? C’est une app gratuite pour s’entraîner en dictée avec suivi de progression… »)
+    * Bouton d’action pour répondre directement (si possible via API)
+
+- [ ] **Intégrer avec les outils existants** :
+  - Lier ce système au projet GitHub `nad-ex_steward` pour suivre les tâches
+  - Créer des issues automatiquement pour les alertes à haute priorité
+  - Utiliser les agents de développement (Claude Code, Codex) pour implémenter les scripts
+
+### 📅 Fréquence et maintenance
+
+- **Scan quotidien** : exécuter chaque matin à 8h00 (heure de Paris)
+- **Revue hebdomadaire** : chaque lundi, ajuster les mots-clés et les sources
+- **Rapport mensuel** : analyser les tendances et les opportunités manquées
+
+### 🛠️ Outils suggérés (à valider avec l’équipe)
+
+- Pour le scraping léger : `requests` + `BeautifulSoup` (Python) ou `curl` + `grep`
+- Pour les APIs officielles : Facebook Graph API (limité), Reddit API, YouTube Data API
+- Pour l’alerte Telegram : créer un bot via @BotFather et utiliser l’API Telegram
+- Pour le suivi : utiliser le projet GitHub `nad-ex_steward` avec des colonnes « À surveiller », « Alerte envoyée », « Réponse donnée »
+
+> ⚠️ Respecter toujours les CGU des plateformes et privilégier les APIs officielles lorsqu’elles existent. Éviter le scraping agressif.
